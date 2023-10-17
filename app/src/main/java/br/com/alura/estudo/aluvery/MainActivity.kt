@@ -1,5 +1,7 @@
 package br.com.alura.estudo.aluvery
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,31 +18,27 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AluveryTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+            MyFirstComposable()
+        }
+    }
+
+
+}
+
+@Composable
+fun MyFirstComposable() {
+    AluveryTheme {
+        Surface {
+            Text(text = "Meu compose")
+            Text(text = "Meu Composito")
         }
     }
 }
 
+@Preview(name = "Preview 1", heightDp = 50, widthDp = 50, showBackground = true, backgroundColor = 0xAAAAFF)
+@Preview(name = "Preview 2", showSystemUi = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "Preview 3", showSystemUi = true, uiMode = UI_MODE_NIGHT_NO)
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AluveryTheme {
-        Greeting("Android")
-    }
+fun MyFirstComposablePreview(){
+    MyFirstComposable()
 }
