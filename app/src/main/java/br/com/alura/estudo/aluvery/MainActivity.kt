@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.alura.estudo.aluvery.extensions.toCurrency
 import br.com.alura.estudo.aluvery.model.Product
+import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 import br.com.alura.estudo.aluvery.ui.theme.Purple500
 import br.com.alura.estudo.aluvery.ui.theme.Teal200
 import java.math.BigDecimal
@@ -46,11 +49,33 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ProductSection()
+            App()
         }
     }
 
 
+
+
+}
+@Composable
+private fun App() {
+    AluveryTheme {
+        Surface {
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+
+            ) {
+                Spacer(Modifier)
+                ProductSection()
+                ProductSection()
+                ProductSection()
+                Spacer(Modifier)
+            }
+        }
+    }
 }
 
 @Composable
@@ -61,11 +86,11 @@ fun ProductSection() {
             text = "Promoções",
             fontWeight = FontWeight(400),
             fontSize = 20.sp,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
         )
         Row(
             Modifier
-                .padding(top = 8.dp, bottom = 16.dp)
+                .padding(top = 8.dp)
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState(16)),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -159,14 +184,18 @@ fun ProductItem(product: Product) {
 }
 
 
-@Preview(showBackground = true)
+@Preview(showSystemUi = true)
+@Composable
+fun AppPreview(){
+    App()
+}
+
+
 @Composable
 fun ProductSectionPreview() {
     ProductSection()
 }
 
-
-@Preview(showBackground = true)
 @Composable
 fun ProductItemPreview() {
     ProductItem(
