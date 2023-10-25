@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -47,10 +48,21 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ProductSection(){
-    Column {
-        Text(text = "Promoções")
-        Row{
+fun ProductSection() {
+    Column(
+    ) {
+        Text(
+            text = "Promoções",
+            fontWeight = FontWeight(400),
+            fontSize = 20.sp,
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+        )
+        Row(
+            Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             ProductItem()
             ProductItem()
             ProductItem()
@@ -60,20 +72,19 @@ fun ProductSection(){
 }
 
 
-
 @Composable
 fun ProductItem() {
     Surface(
-        modifier = Modifier.padding(8.dp),
-        shape= RoundedCornerShape(15.dp),
-        shadowElevation = 4.dp) {
+        shape = RoundedCornerShape(15.dp),
+        shadowElevation = 4.dp
+    ) {
         Column(
             Modifier
                 .heightIn(250.dp, 300.dp)
                 .width(200.dp)
 
         ) {
-            val imageSize= 100.dp
+            val imageSize = 100.dp
             Box(
                 Modifier
                     .fillMaxWidth()
@@ -96,7 +107,7 @@ fun ProductItem() {
                         .align(BottomCenter)
                 )
             }
-            Spacer(modifier = Modifier.height(imageSize/2))
+            Spacer(modifier = Modifier.height(imageSize / 2))
 
             Column(Modifier.padding(16.dp)) {
                 Text(
@@ -111,7 +122,7 @@ fun ProductItem() {
                     text = "R$ 15,99",
                     fontSize = 14.sp,
                     fontWeight = FontWeight(400),
-                    modifier= Modifier.padding(top = 8.dp)
+                    modifier = Modifier.padding(top = 8.dp)
                 )
             }
         }
@@ -120,22 +131,15 @@ fun ProductItem() {
 }
 
 
-
-
-
-
-
-
-
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 1000)
 @Composable
-fun ProductSectionPreview(){
+fun ProductSectionPreview() {
     ProductSection()
 }
 
 
 @Preview(showBackground = true)
 @Composable
-fun ProductItemPreview(){
+fun ProductItemPreview() {
     ProductItem()
 }
