@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -35,8 +36,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.alura.estudo.aluvery.extensions.toCurrency
+import br.com.alura.estudo.aluvery.model.Product
 import br.com.alura.estudo.aluvery.ui.theme.Purple500
 import br.com.alura.estudo.aluvery.ui.theme.Teal200
+import java.math.BigDecimal
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,14 +67,31 @@ fun ProductSection() {
             Modifier
                 .padding(top = 8.dp, bottom = 16.dp)
                 .fillMaxWidth()
-                .horizontalScroll(rememberScrollState(16))
-            ,
+                .horizontalScroll(rememberScrollState(16)),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Spacer(Modifier)
-            ProductItem()
-            ProductItem()
-            ProductItem()
+            ProductItem(
+                Product(
+                    "Hamburger",
+                    BigDecimal("12.99"),
+                    R.drawable.burger
+                )
+            )
+            ProductItem(
+                Product(
+                    "Pizza",
+                    BigDecimal("19.99"),
+                    R.drawable.pizza
+                )
+            )
+            ProductItem(
+                Product(
+                    "Batata Frita",
+                    BigDecimal("7.99"),
+                    R.drawable.fries
+                )
+            )
             Spacer(Modifier)
         }
     }
@@ -79,7 +100,7 @@ fun ProductSection() {
 
 
 @Composable
-fun ProductItem() {
+fun ProductItem(product: Product) {
     Surface(
         shape = RoundedCornerShape(15.dp),
         shadowElevation = 4.dp
@@ -104,20 +125,21 @@ fun ProductItem() {
                     )
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painterResource(id = product.image),
                     contentDescription = null,
                     Modifier
                         .offset(y = (imageSize / 2))
                         .size(imageSize)
                         .clip(shape = CircleShape)
-                        .align(BottomCenter)
+                        .align(BottomCenter),
+                    contentScale = ContentScale.Crop,
                 )
             }
             Spacer(modifier = Modifier.height(imageSize / 2))
 
             Column(Modifier.padding(16.dp)) {
                 Text(
-                    text = LoremIpsum(50).values.first(),
+                    text = product.name,
                     fontSize = 18.sp,
                     fontWeight = FontWeight(700),
                     maxLines = 2,
@@ -125,7 +147,7 @@ fun ProductItem() {
 
                 )
                 Text(
-                    text = "R$ 15,99",
+                    text = product.price.toCurrency(),
                     fontSize = 14.sp,
                     fontWeight = FontWeight(400),
                     modifier = Modifier.padding(top = 8.dp)
@@ -147,5 +169,11 @@ fun ProductSectionPreview() {
 @Preview(showBackground = true)
 @Composable
 fun ProductItemPreview() {
-    ProductItem()
+    ProductItem(
+        Product(
+            LoremIpsum(50).values.first(),
+            BigDecimal("15.94"),
+            R.drawable.ic_launcher_background
+        )
+    )
 }
