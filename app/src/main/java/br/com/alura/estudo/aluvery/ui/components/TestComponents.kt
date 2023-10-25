@@ -1,4 +1,4 @@
-package br.com.alura.estudo.aluvery
+package br.com.alura.estudo.aluvery.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
