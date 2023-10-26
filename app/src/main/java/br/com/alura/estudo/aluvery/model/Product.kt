@@ -6,4 +6,4 @@ class Product(
     val name:String,
     val price:BigDecimal,
     val image:String? = null
-){}
+)
