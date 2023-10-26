@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,8 +33,6 @@ import androidx.compose.ui.unit.sp
 import br.com.alura.estudo.aluvery.R
 import br.com.alura.estudo.aluvery.extensions.toCurrency
 import br.com.alura.estudo.aluvery.model.Product
-import br.com.alura.estudo.aluvery.ui.theme.Purple500
-import br.com.alura.estudo.aluvery.ui.theme.Teal200
 import java.math.BigDecimal
 
 @Composable
@@ -56,13 +55,13 @@ fun ProductItem(product: Product) {
                     .background(
                         brush = Brush.horizontalGradient(
                             colors = listOf(
-                                Purple500, Teal200
+                                MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary
                             )
                         )
                     )
             ) {
                 Image(
-                    painter = painterResource(id = product.image),
+                    painter = painterResource(id = R.drawable.placeholder),
                     contentDescription = null,
                     Modifier
                         .offset(y = (imageSize / 2))
@@ -99,9 +98,8 @@ fun ProductItem(product: Product) {
 fun ProductItemPreview() {
     ProductItem(
         Product(
-            LoremIpsum(50).values.first(),
-            BigDecimal("15.94"),
-            R.drawable.placeholder
+            name = LoremIpsum(50).values.first(),
+            price = BigDecimal("14.99")
         )
     )
 }

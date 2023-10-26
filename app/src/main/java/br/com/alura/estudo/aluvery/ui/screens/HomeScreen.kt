@@ -10,16 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.alura.estudo.aluvery.R
 import br.com.alura.estudo.aluvery.model.Product
-import br.com.alura.estudo.aluvery.sampledata.sampleProducts
-import br.com.alura.estudo.aluvery.ui.components.ProductSection
-
-import java.math.BigDecimal
+import br.com.alura.estudo.aluvery.sampledata.sampleSections
+import br.com.alura.estudo.aluvery.ui.components.ProductsSection
 
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(sections:Map<String,List<Product>>) {
     Column(
         Modifier
             .fillMaxSize()
@@ -28,9 +25,12 @@ fun HomeScreen() {
 
     ) {
         Spacer(Modifier)
-        ProductSection("Promoções", sampleProducts)
-        ProductSection("Doces", listOf<Product>(Product("Chocolata", BigDecimal("5.99"), R.drawable.placeholder)))
-        ProductSection("Bebidas", sampleProducts)
+        for (section in sections){
+            val title = section.key
+            val products = section.value
+            ProductsSection(title = title, products = products)
+        }
+
         Spacer(Modifier)
     }
 }
@@ -38,5 +38,5 @@ fun HomeScreen() {
 @Preview(showSystemUi = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(sampleSections)
 }
