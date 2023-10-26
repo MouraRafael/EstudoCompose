@@ -8,6 +8,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -16,15 +20,16 @@ import br.com.alura.estudo.aluvery.sampledata.sampleSections
 import br.com.alura.estudo.aluvery.ui.components.ProductsSection
 
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(sections:Map<String,List<Product>>) {
-
+fun HomeScreen(sections: Map<String, List<Product>>) {
+    var valor: String by remember {
+        mutableStateOf("")
+    }
     Column {
-        var valor = ""
-        OutlinedTextField(value = valor, onValueChange = {newValue->
-            valor+=newValue
+
+        OutlinedTextField(value = valor, onValueChange = { newValue ->
+            valor = newValue
         })
         LazyColumn(
             Modifier
