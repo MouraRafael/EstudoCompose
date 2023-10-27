@@ -8,8 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,9 +41,13 @@ fun HomeScreen(sections: Map<String, List<Product>>) {
                 valor = newValue
             },
             Modifier
-                .padding(start= 16.dp,top= 16.dp,end= 16.dp)
+                .padding(start = 16.dp, top = 16.dp, end = 16.dp)
                 .fillMaxWidth(),
-            shape = RoundedCornerShape(100)
+            shape = RoundedCornerShape(100),
+            leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Ícone de busca")},
+            label = { Text(text = "Produtos")},
+            placeholder = { Text(text = "O que você procura?")}
+
         )
         LazyColumn(
             Modifier
