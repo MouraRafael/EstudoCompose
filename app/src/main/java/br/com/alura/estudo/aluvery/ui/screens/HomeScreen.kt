@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
@@ -28,9 +31,16 @@ fun HomeScreen(sections: Map<String, List<Product>>) {
     }
     Column {
 
-        OutlinedTextField(value = valor, onValueChange = { newValue ->
-            valor = newValue
-        })
+        OutlinedTextField(
+            value = valor,
+            onValueChange = { newValue ->
+                valor = newValue
+            },
+            Modifier
+                .padding(start= 16.dp,top= 16.dp,end= 16.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(100)
+        )
         LazyColumn(
             Modifier
                 .fillMaxSize(),
