@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,13 +28,16 @@ import br.com.alura.estudo.aluvery.model.Product
 import br.com.alura.estudo.aluvery.sampledata.sampleProducts
 import br.com.alura.estudo.aluvery.sampledata.sampleSections
 import br.com.alura.estudo.aluvery.ui.components.CardProductItem
+import br.com.alura.estudo.aluvery.ui.components.ProductsSection
+import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(sections: Map<String, List<Product>>) {
+fun HomeScreen(sections: Map<String, List<Product>>,
+               searchText:String = "") {
     var valor: String by remember {
-        mutableStateOf("")
+        mutableStateOf(searchText)
     }
     Column {
 
@@ -58,19 +62,23 @@ fun HomeScreen(sections: Map<String, List<Product>>) {
             contentPadding = PaddingValues(bottom = 16.dp)
 
         ) {
-            
-            items(sampleProducts){produto->
-                CardProductItem(product = produto, Modifier.padding(horizontal = 16.dp))
+            if(valor.isBlank()){
+                for (section in sections) {
+                    val title = section.key
+                    val products = section.value
+                    item {
+                        ProductsSection(title = title, products = products)
+                    }
+                }
+            }else{
+                items(sampleProducts){produto->
+                    CardProductItem(product = produto, Modifier.padding(horizontal = 16.dp))
 
+                }
             }
 
-//            for (section in sections) {
-//                val title = section.key
-//                val products = section.value
-//                item {
-//                    ProductsSection(title = title, products = products)
-//                }
-//            }
+
+
 
 
         }
@@ -81,4 +89,15 @@ fun HomeScreen(sections: Map<String, List<Product>>) {
 @Composable
 fun HomeScreenPreview() {
     HomeScreen(sampleSections)
+}
+
+
+@Preview
+@Composable
+fun HomeScreenPreviewWithSearchText() {
+    AluveryTheme {
+        Surface {
+            HomeScreen(sampleSections,"a")
+        }
+    }
 }
