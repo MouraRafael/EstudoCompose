@@ -43,7 +43,7 @@ fun HomeScreen(sections: Map<String, List<Product>>) {
                 valor = newValue
             },
             Modifier
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp)
+                .padding(16.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(100),
             leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Ícone de busca")},
@@ -55,12 +55,12 @@ fun HomeScreen(sections: Map<String, List<Product>>) {
             Modifier
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(vertical = 16.dp)
+            contentPadding = PaddingValues(bottom = 16.dp)
 
         ) {
             
             items(sampleProducts){produto->
-                CardProductItem(product = produto)
+                CardProductItem(product = produto, Modifier.padding(horizontal = 16.dp))
 
             }
 

@@ -21,10 +21,10 @@ import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 
 @Composable
 fun ProductsSection(title:String,
+                    modifier: Modifier=Modifier,
                    products: List<Product>
                    ) {
-    Column(
-    ) {
+    Column(modifier) {
         Text(
             text = title,
             fontWeight = FontWeight(400),

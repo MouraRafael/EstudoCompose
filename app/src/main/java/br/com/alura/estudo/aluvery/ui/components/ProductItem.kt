@@ -38,8 +38,9 @@ import coil.request.ImageRequest
 import java.math.BigDecimal
 
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(product: Product,modifier: Modifier=Modifier) {
     Surface(
+        modifier,
         shape = RoundedCornerShape(15.dp),
         shadowElevation = 4.dp
     ) {
