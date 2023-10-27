@@ -39,6 +39,19 @@ fun HomeScreen(sections: Map<String, List<Product>>,
     var valor: String by remember {
         mutableStateOf(searchText)
     }
+
+    val produtos = remember(valor){
+    //Este remember faz com que a filtro só seja executado novamente caso haja uma mudança na variavel valor
+        if(valor.isNotBlank()){sampleProducts.filter { p ->
+            p.name.contains(valor, ignoreCase = true) ||
+                    p.description?.contains(valor, ignoreCase = true) ?: false
+        }}else emptyList()
+    }
+
+
+
+
+
     Column {
 
         OutlinedTextField(
@@ -71,7 +84,7 @@ fun HomeScreen(sections: Map<String, List<Product>>,
                     }
                 }
             }else{
-                items(sampleProducts){produto->
+                items(produtos){produto->
                     CardProductItem(product = produto, Modifier.padding(horizontal = 16.dp))
 
                 }
@@ -97,7 +110,7 @@ fun HomeScreenPreview() {
 fun HomeScreenPreviewWithSearchText() {
     AluveryTheme {
         Surface {
-            HomeScreen(sampleSections,"a")
+            HomeScreen(sampleSections,"Lorem")
         }
     }
 }
