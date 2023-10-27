@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -23,8 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.alura.estudo.aluvery.model.Product
+import br.com.alura.estudo.aluvery.sampledata.sampleProducts
 import br.com.alura.estudo.aluvery.sampledata.sampleSections
-import br.com.alura.estudo.aluvery.ui.components.ProductsSection
+import br.com.alura.estudo.aluvery.ui.components.CardProductItem
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,14 +58,19 @@ fun HomeScreen(sections: Map<String, List<Product>>) {
             contentPadding = PaddingValues(vertical = 16.dp)
 
         ) {
+            
+            items(sampleProducts){produto->
+                CardProductItem(product = produto)
 
-            for (section in sections) {
-                val title = section.key
-                val products = section.value
-                item {
-                    ProductsSection(title = title, products = products)
-                }
             }
+
+//            for (section in sections) {
+//                val title = section.key
+//                val products = section.value
+//                item {
+//                    ProductsSection(title = title, products = products)
+//                }
+//            }
 
 
         }
