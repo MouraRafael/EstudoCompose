@@ -16,15 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import br.com.alura.estudo.aluvery.R
 import br.com.alura.estudo.aluvery.extensions.toCurrency
 import br.com.alura.estudo.aluvery.model.Product
-import br.com.alura.estudo.aluvery.sampledata.sampleProducts
 import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 import br.com.alura.estudo.aluvery.ui.theme.Indigo400Light
 import coil.compose.AsyncImage
+import java.math.BigDecimal
 
 
 @Composable
@@ -63,12 +64,14 @@ fun CardProductItem(
                     text = product.price.toCurrency()
                 )
             }
-            // TODO: adicionar descrição do produto
-            // Text(
-            //     text = product.description,
-            //     Modifier
-            //         .padding(16.dp)
-            // )
+             product.description?.let {
+
+                 Text(
+                     text = product.description,
+                     Modifier
+                         .padding(16.dp)
+                 )
+             }
         }
     }
 }
@@ -79,7 +82,27 @@ private fun CardProductItemPreview() {
     AluveryTheme {
         Surface {
             CardProductItem(
-                product = sampleProducts.random(),
+                product = Product(
+                    name = "Refrigerante",
+                    price = BigDecimal("4.99"),
+                    image = "https://images.pexels.com/photos/2775860/pexels-photo-2775860.jpeg"
+                ),
+            )
+        }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+private fun CardProductItemWithDescriptionPreview() {
+    AluveryTheme {
+        Surface {
+            CardProductItem(
+                product = Product(
+                    name = "Refrigerante",
+                    price = BigDecimal("4.99"),
+                    image = "https://images.pexels.com/photos/2775860/pexels-photo-2775860.jpeg",
+                    description = LoremIpsum(50).values.first()
+                ),
             )
         }
     }
