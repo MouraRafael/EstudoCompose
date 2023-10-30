@@ -133,7 +133,7 @@ fun ProductFormScreen() {
 
         var price by remember { mutableStateOf("") }
         val formatter = remember {
-            DecimalFormat("#,##")
+            DecimalFormat("#.##")
         }
 
         TextField(
