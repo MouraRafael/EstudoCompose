@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +40,7 @@ import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import java.math.BigDecimal
+import java.text.DecimalFormat
 
 class ProductFormActivity : ComponentActivity() {
 
@@ -88,45 +90,64 @@ fun ProductFormScreen() {
                     .crossfade(1000)
                     .build(),
                 contentDescription = null,
-                Modifier.fillMaxWidth().height(200.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
                 placeholder = painterResource(id = R.drawable.placeholder),
                 error = painterResource(id = R.drawable.placeholder),
 
-            )
+                )
         }
 
 
-        TextField(value = url, onValueChange = {
-            url = it
-        },
+        TextField(
+            value = url, onValueChange = {
+                url = it
+            },
             Modifier.fillMaxWidth(),
             label = { Text(text = "Url da Imagem") },
             placeholder = { Text(text = "Insira a Url da Imagem") },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Uri,
-                imeAction = ImeAction.Next
-            )
+                imeAction = ImeAction.Next,
+
+                )
         )
 
 
         var name by remember { mutableStateOf("") }
-        TextField(value = name, onValueChange = {
-            name = it
-        },
+        TextField(
+            value = name, onValueChange = {
+                name = it
+            },
             Modifier.fillMaxWidth(),
             label = { Text(text = "Nome") },
             placeholder = { Text(text = "Digite o Nome") },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next
-                
+                imeAction = ImeAction.Next,
+                capitalization = KeyboardCapitalization.Words
+
             )
         )
 
         var price by remember { mutableStateOf("") }
-        TextField(value = price, onValueChange = {
-            price = it
-        },
+        val formatter = remember {
+            DecimalFormat("#,##")
+        }
+
+        TextField(
+            value = price,
+            onValueChange = {
+
+                try {
+                    price = formatter.format(BigDecimal(it))
+                } catch (e: IllegalArgumentException) {
+                    if (it.isBlank()) {
+                        price = it
+                    }
+                }
+            },
             Modifier.fillMaxWidth(),
             label = { Text(text = "Preço") },
             placeholder = { Text(text = "Digite o preço") },
@@ -138,9 +159,10 @@ fun ProductFormScreen() {
 
 
         var description by remember { mutableStateOf("") }
-        TextField(value = description, onValueChange = {
-            description = it
-        },
+        TextField(
+            value = description, onValueChange = {
+                description = it
+            },
             Modifier
                 .fillMaxWidth()
                 .heightIn(100.dp),
@@ -148,6 +170,7 @@ fun ProductFormScreen() {
             placeholder = { Text(text = "Digite a descrição") },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
+                capitalization = KeyboardCapitalization.Sentences
             )
         )
 
