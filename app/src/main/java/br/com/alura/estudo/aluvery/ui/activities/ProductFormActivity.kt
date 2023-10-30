@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,15 +22,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 
-class ProductFormActivity: ComponentActivity() {
+class ProductFormActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
-        setContent{
+        setContent {
             AluveryTheme {
                 Surface {
                     ProductFormScreen()
@@ -43,39 +46,70 @@ class ProductFormActivity: ComponentActivity() {
 @Composable
 fun ProductFormScreen() {
 
-    Column{
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
 
-        Text(text = "Criando o Produto")
 
-        var url by remember  { mutableStateOf("") }
+        Text(
+            text = "Criando o Produto",
+            Modifier
+                .fillMaxWidth(),
+            fontSize = 28.sp
+        )
+
+        var url by remember { mutableStateOf("") }
         TextField(value = url, onValueChange = {
             url = it
-        })
+        },
+            Modifier.fillMaxWidth(),
+            label = { Text(text = "Url da Imagem") },
+            placeholder = { Text(text = "Insira a Url da Imagem") }
+        )
 
-        var name by remember  { mutableStateOf("") }
+
+        var name by remember { mutableStateOf("") }
         TextField(value = name, onValueChange = {
             name = it
-        })
+        },
+            Modifier.fillMaxWidth(),
+            label = { Text(text = "Nome") },
+            placeholder = { Text(text = "Digite o Nome") }
+        )
 
-        var price by remember  { mutableStateOf("") }
+        var price by remember { mutableStateOf("") }
         TextField(value = price, onValueChange = {
             price = it
-        })
+        },
+            Modifier.fillMaxWidth(),
+            label = { Text(text = "Preço") },
+            placeholder = { Text(text = "Digite o preço") }
+        )
 
 
-        var description by remember  { mutableStateOf("") }
+        var description by remember { mutableStateOf("") }
         TextField(value = description, onValueChange = {
             description = it
-        })
+        },
+            Modifier.fillMaxWidth().heightIn(100.dp),
+            label = { Text(text = "Descrição") },
+            placeholder = { Text(text = "Digite a descrição") }
+        )
 
-        Button(onClick = { /*TODO*/ }) {
+        Button(
+            onClick = { /*TODO*/ },
+            Modifier
+                .fillMaxWidth()
+        ) {
             Text(text = "Salvar")
         }
 
 
-
     }
-    
+
 }
 
 @Preview(showBackground = true)
