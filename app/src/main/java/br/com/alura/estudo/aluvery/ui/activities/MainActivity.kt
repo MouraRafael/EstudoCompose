@@ -16,17 +16,34 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import br.com.alura.estudo.aluvery.dao.ProductDao
+import br.com.alura.estudo.aluvery.model.Product
+import br.com.alura.estudo.aluvery.sampledata.sampleCandies
+import br.com.alura.estudo.aluvery.sampledata.sampleDrinks
+import br.com.alura.estudo.aluvery.sampledata.sampleProducts
 import br.com.alura.estudo.aluvery.sampledata.sampleSections
 import br.com.alura.estudo.aluvery.ui.screens.HomeScreen
 import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 
 class MainActivity : ComponentActivity() {
+
+
+    private val dao = ProductDao()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             App(onFabClick = {
                 startActivity(Intent(this,ProductFormActivity::class.java))
-            })
+            }){
+                val sections: Map<String, List<Product>> = mapOf(
+                    "Todos os Produtos" to dao.products(),
+                    "Promoções" to sampleDrinks+ sampleCandies,
+                    "Doces" to sampleCandies,
+                    "bebidas" to sampleDrinks
+                )
+                HomeScreen(sections)
+            }
         }
     }
 
@@ -35,7 +52,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun App(onFabClick:()->Unit ={}) {
+private fun App(onFabClick:()->Unit ={},content:@Composable ()->Unit = {}) {
     AluveryTheme {
         Surface {
             Scaffold(
@@ -46,7 +63,7 @@ private fun App(onFabClick:()->Unit ={}) {
                 }
             ) { paddingValues ->
                 Box(modifier = Modifier.padding(paddingValues)) {
-                    HomeScreen(sampleSections)
+                    content()
                 }
 
             }
@@ -58,5 +75,5 @@ private fun App(onFabClick:()->Unit ={}) {
 @Preview
 @Composable
 fun AppPreview() {
-    App()
+    App(){HomeScreen(sampleSections)}
 }
