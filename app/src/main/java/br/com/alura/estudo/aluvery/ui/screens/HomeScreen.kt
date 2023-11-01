@@ -26,14 +26,41 @@ import br.com.alura.estudo.aluvery.ui.components.SearchTextField
 import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 
 
+class HomeScreenUiState(searchText: String){
+
+    var text: String by mutableStateOf(searchText)
+
+
+
+
+    val searchedProducts get() = if(text.isNotBlank()){
+        sampleProducts.filter { p ->
+            p.name.contains(text, ignoreCase = true) ||
+                    p.description?.contains(text, ignoreCase = true) ?: false
+        }}else emptyList()
+
+    fun isShowSections():Boolean {
+        return text.isBlank()
+    }
+
+
+}
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(sections: Map<String, List<Product>>,
                searchText:String = "") {
-    var text: String by remember {
-        mutableStateOf(searchText)
-    }
 
+
+    val state = remember {
+        HomeScreenUiState(searchText)
+    }
+    val text = state.text
+
+    val searchedProducts = remember(text) {
+        state.searchedProducts
+    }
 
 
 
@@ -45,18 +72,9 @@ fun HomeScreen(sections: Map<String, List<Product>>,
         SearchTextField(
             searchText = text,
             onSearchTextChanged = {
-            text =it
+            state.text =it
         })
 
-
-
-        val produtos = remember(text){
-            //Este remember faz com que a filtro só seja executado novamente caso haja uma mudança na variavel valor
-            if(text.isNotBlank()){sampleProducts.filter { p ->
-                p.name.contains(text, ignoreCase = true) ||
-                        p.description?.contains(text, ignoreCase = true) ?: false
-            }}else emptyList()
-        }
         LazyColumn(
             Modifier
                 .fillMaxSize(),
@@ -64,7 +82,7 @@ fun HomeScreen(sections: Map<String, List<Product>>,
             contentPadding = PaddingValues(bottom = 16.dp)
 
         ) {
-            if(text.isBlank()){
+            if(state.isShowSections()){
                 for (section in sections) {
                     val title = section.key
                     val products = section.value
@@ -73,7 +91,7 @@ fun HomeScreen(sections: Map<String, List<Product>>,
                     }
                 }
             }else{
-                items(produtos){produto->
+                items(searchedProducts){produto->
                     CardProductItem(product = produto, Modifier.padding(horizontal = 16.dp))
 
                 }
