@@ -29,6 +29,7 @@ import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 class HomeScreenUiState(searchText: String){
 
     var text: String by mutableStateOf(searchText)
+    private set
 
 
 
@@ -43,6 +44,11 @@ class HomeScreenUiState(searchText: String){
         return text.isBlank()
     }
 
+    val onSearchTextChanged:(String)->Unit={searchedText->
+        text =searchedText
+
+    }
+
 
 }
 
@@ -50,30 +56,20 @@ class HomeScreenUiState(searchText: String){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(sections: Map<String, List<Product>>,
-               searchText:String = "") {
+               state:HomeScreenUiState = HomeScreenUiState("")
+) {
 
-
-    val state = remember {
-        HomeScreenUiState(searchText)
-    }
     val text = state.text
-
     val searchedProducts = remember(text) {
         state.searchedProducts
     }
 
 
-
-
     Column {
-
-
-
         SearchTextField(
             searchText = text,
-            onSearchTextChanged = {
-            state.text =it
-        })
+            onSearchTextChanged = state.onSearchTextChanged
+        )
 
         LazyColumn(
             Modifier
@@ -96,11 +92,6 @@ fun HomeScreen(sections: Map<String, List<Product>>,
 
                 }
             }
-
-
-
-
-
         }
     }
 }
@@ -117,7 +108,7 @@ fun HomeScreenPreview() {
 fun HomeScreenPreviewWithSearchText() {
     AluveryTheme {
         Surface {
-            HomeScreen(sampleSections,"Lorem")
+            HomeScreen(sampleSections,HomeScreenUiState("a"))
         }
     }
 }
