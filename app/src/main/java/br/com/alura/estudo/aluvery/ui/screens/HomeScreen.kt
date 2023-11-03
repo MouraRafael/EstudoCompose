@@ -28,6 +28,7 @@ import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 
 class HomeScreenUiState(
     val sections: Map<String, List<Product>> = emptyMap(),
+    private val products: List<Product> = emptyList(),
     searchText: String=""){
 
     var text: String by mutableStateOf(searchText)
@@ -37,10 +38,13 @@ class HomeScreenUiState(
 
 
     val searchedProducts get() = if(text.isNotBlank()){
-        sampleProducts.filter { p ->
-            p.name.contains(text, ignoreCase = true) ||
-                    p.description?.contains(text, ignoreCase = true) ?: false
-        }}else emptyList()
+        sampleProducts.filter(containsInNameOrDescription())+products.filter(containsInNameOrDescription())
+    }else emptyList()
+
+    private fun containsInNameOrDescription() = { p:Product ->
+        p.name.contains(text, ignoreCase = true) ||
+                p.description?.contains(text, ignoreCase = true) ?: false
+    }
 
     fun isShowSections():Boolean {
         return text.isBlank()
@@ -111,7 +115,7 @@ fun HomeScreenPreview() {
 fun HomeScreenPreviewWithSearchText() {
     AluveryTheme {
         Surface {
-            HomeScreen(HomeScreenUiState(sampleSections,"a"))
+            HomeScreen(HomeScreenUiState(sections = sampleSections, searchText = "a"))
         }
     }
 }
