@@ -42,6 +42,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import java.math.BigDecimal
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 class ProductFormActivity : ComponentActivity() {
 
@@ -139,7 +141,7 @@ fun ProductFormScreen(onSaveClick:(Product)->Unit={}) {
 
         var price by remember { mutableStateOf("") }
         val formatter = remember {
-            DecimalFormat("#.##")
+            DecimalFormat("0.00")
         }
 
         TextField(
@@ -151,8 +153,10 @@ fun ProductFormScreen(onSaveClick:(Product)->Unit={}) {
                 } catch (e: IllegalArgumentException) {
                     if (it.isBlank()) {
                         price = it
+
                     }
                 }
+                Log.i("PRICE", "ProductFormScreen: ------>$price<-----------")
             },
             Modifier.fillMaxWidth(),
             label = { Text(text = "Preço") },
