@@ -26,7 +26,9 @@ import br.com.alura.estudo.aluvery.ui.components.SearchTextField
 import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 
 
-class HomeScreenUiState(searchText: String){
+class HomeScreenUiState(
+    val sections: Map<String, List<Product>> = emptyMap(),
+    searchText: String=""){
 
     var text: String by mutableStateOf(searchText)
     private set
@@ -55,10 +57,11 @@ class HomeScreenUiState(searchText: String){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(sections: Map<String, List<Product>>,
-               state:HomeScreenUiState = HomeScreenUiState("")
+fun HomeScreen(
+               state:HomeScreenUiState = HomeScreenUiState()
 ) {
 
+    val sections = state.sections
     val text = state.text
     val searchedProducts = remember(text) {
         state.searchedProducts
@@ -99,7 +102,7 @@ fun HomeScreen(sections: Map<String, List<Product>>,
 @Preview(showSystemUi = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(sampleSections)
+    HomeScreen()
 }
 
 
@@ -108,7 +111,7 @@ fun HomeScreenPreview() {
 fun HomeScreenPreviewWithSearchText() {
     AluveryTheme {
         Surface {
-            HomeScreen(sampleSections,HomeScreenUiState("a"))
+            HomeScreen(HomeScreenUiState(sampleSections,"a"))
         }
     }
 }
