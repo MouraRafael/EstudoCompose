@@ -36,16 +36,22 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             App(onFabClick = {
-                startActivity(Intent(this,ProductFormActivity::class.java))
-            }){
+                startActivity(Intent(this, ProductFormActivity::class.java))
+            }) {
+                val products = dao.products()
                 val sections: Map<String, List<Product>> = mapOf(
-                    "Todos os Produtos" to dao.products(),
-                    "Promoções" to sampleDrinks+ sampleCandies,
+                    "Todos os Produtos" to products,
+                    "Promoções" to sampleDrinks + sampleCandies,
                     "Doces" to sampleCandies,
                     "bebidas" to sampleDrinks
                 )
-                val state = remember(sections){HomeScreenUiState(sections)}
-                HomeScreen(state=state)
+                val state = remember(products) {
+                    HomeScreenUiState(
+                        sections = sections,
+                        products = products,
+                    )
+                }
+                HomeScreen(state = state)
             }
         }
     }
@@ -55,7 +61,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun App(onFabClick:()->Unit ={},content:@Composable ()->Unit = {}) {
+private fun App(onFabClick: () -> Unit = {}, content: @Composable () -> Unit = {}) {
     AluveryTheme {
         Surface {
             Scaffold(
@@ -78,5 +84,5 @@ private fun App(onFabClick:()->Unit ={},content:@Composable ()->Unit = {}) {
 @Preview
 @Composable
 fun AppPreview() {
-    App(){HomeScreen(HomeScreenUiState(sampleSections))}
+    App() { HomeScreen(HomeScreenUiState(sampleSections)) }
 }

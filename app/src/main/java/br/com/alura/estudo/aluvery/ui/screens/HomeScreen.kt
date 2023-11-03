@@ -28,26 +28,36 @@ import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 
 class HomeScreenUiState(
     val sections: Map<String, List<Product>> = emptyMap(),
-    searchText: String=""){
+    private val products: List<Product> = emptyList(),
+    searchText: String = ""
+) {
 
     var text: String by mutableStateOf(searchText)
-    private set
+        private set
 
 
+    val searchedProducts
+        get() = if (text.isNotBlank()) {
+            sampleProducts.filter(containsInNameOrDescription()) +
+                    products.filter(containsInNameOrDescription())
+        } else emptyList()
 
+    private fun containsInNameOrDescription() = { p: Product ->
+        p.name.contains(
+            text,
+            ignoreCase = true
+        ) || p.description?.contains(
+            text,
+            ignoreCase = true
+        ) ?: false
+    }
 
-    val searchedProducts get() = if(text.isNotBlank()){
-        sampleProducts.filter { p ->
-            p.name.contains(text, ignoreCase = true) ||
-                    p.description?.contains(text, ignoreCase = true) ?: false
-        }}else emptyList()
-
-    fun isShowSections():Boolean {
+    fun isShowSections(): Boolean {
         return text.isBlank()
     }
 
-    val onSearchTextChanged:(String)->Unit={searchedText->
-        text =searchedText
+    val onSearchTextChanged: (String) -> Unit = { searchedText ->
+        text = searchedText
 
     }
 
@@ -58,7 +68,7 @@ class HomeScreenUiState(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-               state:HomeScreenUiState = HomeScreenUiState()
+    state: HomeScreenUiState = HomeScreenUiState()
 ) {
 
     val sections = state.sections
@@ -81,7 +91,7 @@ fun HomeScreen(
             contentPadding = PaddingValues(bottom = 16.dp)
 
         ) {
-            if(state.isShowSections()){
+            if (state.isShowSections()) {
                 for (section in sections) {
                     val title = section.key
                     val products = section.value
@@ -89,8 +99,8 @@ fun HomeScreen(
                         ProductsSection(title = title, products = products)
                     }
                 }
-            }else{
-                items(searchedProducts){produto->
+            } else {
+                items(searchedProducts) { produto ->
                     CardProductItem(product = produto, Modifier.padding(horizontal = 16.dp))
 
                 }
@@ -111,7 +121,7 @@ fun HomeScreenPreview() {
 fun HomeScreenPreviewWithSearchText() {
     AluveryTheme {
         Surface {
-            HomeScreen(HomeScreenUiState(sampleSections,"a"))
+            HomeScreen(HomeScreenUiState(sections = sampleSections, searchText = "a"))
         }
     }
 }
