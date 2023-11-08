@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,6 +22,7 @@ import br.com.alura.estudo.aluvery.sampledata.sampleSections
 import br.com.alura.estudo.aluvery.ui.screens.HomeScreen
 import br.com.alura.estudo.aluvery.ui.screens.HomeScreenUiState
 import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
+import br.com.alura.estudo.aluvery.ui.viewmodels.HomeScreenViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -34,7 +36,8 @@ class MainActivity : ComponentActivity() {
                 startActivity(Intent(this, ProductFormActivity::class.java))
             }) {
                 val products = dao.products()
-                HomeScreen(products)
+                val viewModel by viewModels<HomeScreenViewModel>()
+                HomeScreen(viewModel,products)
             }
         }
     }

@@ -27,6 +27,7 @@ import br.com.alura.estudo.aluvery.ui.components.CardProductItem
 import br.com.alura.estudo.aluvery.ui.components.ProductsSection
 import br.com.alura.estudo.aluvery.ui.components.SearchTextField
 import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
+import br.com.alura.estudo.aluvery.ui.viewmodels.HomeScreenViewModel
 
 
 class HomeScreenUiState(
@@ -46,7 +47,10 @@ class HomeScreenUiState(
 }
 
 @Composable
-fun HomeScreen(products: List<Product>) {
+fun HomeScreen(
+    viewModel: HomeScreenViewModel,
+    products: List<Product>
+) {
     var text by rememberSaveable {
         mutableStateOf("")
     }
@@ -75,7 +79,9 @@ fun HomeScreen(products: List<Product>) {
         "Doces" to sampleCandies,
         "bebidas" to sampleDrinks
     )
-    val state = remember(products,text) {
+    val state = viewModel.uiState
+
+    val oldstate=remember(products,text) {
         HomeScreenUiState(
             sections = sections,
             searchedProducts = searchedProducts,
