@@ -10,15 +10,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.alura.estudo.aluvery.model.Product
-import br.com.alura.estudo.aluvery.sampledata.sampleProducts
 import br.com.alura.estudo.aluvery.sampledata.sampleSections
 import br.com.alura.estudo.aluvery.ui.components.CardProductItem
 import br.com.alura.estudo.aluvery.ui.components.ProductsSection
@@ -28,37 +23,15 @@ import br.com.alura.estudo.aluvery.ui.theme.AluveryTheme
 
 class HomeScreenUiState(
     val sections: Map<String, List<Product>> = emptyMap(),
-    private val products: List<Product> = emptyList(),
-    searchText: String = ""
+    val searchedProducts: List<Product> = emptyList(),
+    val searchText: String = "",
+    val onSearchTextChanged: (String) -> Unit ={}
 ) {
 
-    var text: String by mutableStateOf(searchText)
-        private set
 
-
-    val searchedProducts
-        get() = if (text.isNotBlank()) {
-            sampleProducts.filter(containsInNameOrDescription()) +
-                    products.filter(containsInNameOrDescription())
-        } else emptyList()
-
-    private fun containsInNameOrDescription() = { p: Product ->
-        p.name.contains(
-            text,
-            ignoreCase = true
-        ) || p.description?.contains(
-            text,
-            ignoreCase = true
-        ) ?: false
-    }
 
     fun isShowSections(): Boolean {
-        return text.isBlank()
-    }
-
-    val onSearchTextChanged: (String) -> Unit = { searchedText ->
-        text = searchedText
-
+        return searchText.isBlank()
     }
 
 
@@ -72,10 +45,8 @@ fun HomeScreen(
 ) {
 
     val sections = state.sections
-    val text = state.text
-    val searchedProducts = remember(text) {
-        state.searchedProducts
-    }
+    val text = state.searchText
+    val searchedProducts = state.searchedProducts
 
 
     Column {

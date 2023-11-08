@@ -14,7 +14,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.alura.estudo.aluvery.dao.ProductDao
@@ -39,16 +42,43 @@ class MainActivity : ComponentActivity() {
                 startActivity(Intent(this, ProductFormActivity::class.java))
             }) {
                 val products = dao.products()
+                var text by remember {
+                    mutableStateOf("")
+                }
+
+
+                fun containsInNameOrDescription() = { p: Product ->
+                    p.name.contains(
+                        text,
+                        ignoreCase = true
+                    ) || p.description?.contains(
+                        text,
+                        ignoreCase = true
+                    ) ?: false
+                }
+                val searchedProducts = if (text.isNotBlank()) {
+                    sampleProducts.filter(containsInNameOrDescription()) +
+                            products.filter(containsInNameOrDescription())
+                } else emptyList()
+
+
+
+
+
                 val sections: Map<String, List<Product>> = mapOf(
-                    "Todos os Produtos" to products,
+                    "Todos os Produtos" to searchedProducts,
                     "Promoções" to sampleDrinks + sampleCandies,
                     "Doces" to sampleCandies,
                     "bebidas" to sampleDrinks
                 )
-                val state = remember(products) {
+                val state = remember(products,text) {
                     HomeScreenUiState(
                         sections = sections,
-                        products = products,
+                        searchedProducts = searchedProducts,
+                        searchText = text,
+                        onSearchTextChanged = {
+                            text = it
+                        }
                     )
                 }
                 HomeScreen(state = state)
