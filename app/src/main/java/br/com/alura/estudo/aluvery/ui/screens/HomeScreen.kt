@@ -70,7 +70,7 @@ fun HomeScreen(products: List<Product>) {
 
 
     val sections: Map<String, List<Product>> = mapOf(
-        "Todos os Produtos" to searchedProducts,
+        "Todos os Produtos" to products,
         "Promoções" to sampleDrinks + sampleCandies,
         "Doces" to sampleCandies,
         "bebidas" to sampleDrinks
