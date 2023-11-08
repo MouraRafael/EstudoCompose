@@ -7,7 +7,7 @@ import br.com.alura.estudo.aluvery.sampledata.sampleProducts
 class ProductDao {
 
     companion object{
-        val products = mutableStateListOf<Product>()
+        val products = mutableStateListOf<Product>(*sampleProducts.toTypedArray())
     }
 
     fun products() = products.toList()
