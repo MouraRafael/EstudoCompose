@@ -10,10 +10,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.alura.estudo.aluvery.model.Product
+import br.com.alura.estudo.aluvery.sampledata.sampleCandies
+import br.com.alura.estudo.aluvery.sampledata.sampleDrinks
+import br.com.alura.estudo.aluvery.sampledata.sampleProducts
 import br.com.alura.estudo.aluvery.sampledata.sampleSections
 import br.com.alura.estudo.aluvery.ui.components.CardProductItem
 import br.com.alura.estudo.aluvery.ui.components.ProductsSection
@@ -37,6 +44,50 @@ class HomeScreenUiState(
 
 }
 
+@Composable
+fun HomeScreen(products: List<Product>) {
+    var text by remember {
+        mutableStateOf("")
+    }
+
+
+    fun containsInNameOrDescription() = { p: Product ->
+        p.name.contains(
+            text,
+            ignoreCase = true
+        ) || p.description?.contains(
+            text,
+            ignoreCase = true
+        ) ?: false
+    }
+    val searchedProducts = if (text.isNotBlank()) {
+        sampleProducts.filter(containsInNameOrDescription()) +
+                products.filter(containsInNameOrDescription())
+    } else emptyList()
+
+
+
+
+
+    val sections: Map<String, List<Product>> = mapOf(
+        "Todos os Produtos" to searchedProducts,
+        "Promoções" to sampleDrinks + sampleCandies,
+        "Doces" to sampleCandies,
+        "bebidas" to sampleDrinks
+    )
+    val state = remember(products,text) {
+        HomeScreenUiState(
+            sections = sections,
+            searchedProducts = searchedProducts,
+            searchText = text,
+            onSearchTextChanged = {
+                text = it
+            }
+        )
+    }
+    HomeScreen(state = state)
+
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
