@@ -61,8 +61,7 @@ fun HomeScreen(products: List<Product>) {
         ) ?: false
     }
     val searchedProducts = if (text.isNotBlank()) {
-        sampleProducts.filter(containsInNameOrDescription()) +
-                products.filter(containsInNameOrDescription())
+        sampleProducts.filter(containsInNameOrDescription())
     } else emptyList()
 
 
