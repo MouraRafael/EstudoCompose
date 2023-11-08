@@ -70,6 +70,7 @@ fun CardProductItem(
                     .background(Indigo400Light)
                     .padding(16.dp)
             ) {
+
                 Text(
                     text = product.name
                 )
