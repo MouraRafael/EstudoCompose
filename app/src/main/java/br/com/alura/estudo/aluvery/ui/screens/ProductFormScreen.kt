@@ -1,6 +1,5 @@
 package br.com.alura.estudo.aluvery.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,10 +18,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -33,44 +28,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.alura.estudo.aluvery.R
-import br.com.alura.estudo.aluvery.model.Product
 import br.com.alura.estudo.aluvery.ui.states.ProductFormScreenUiState
 import br.com.alura.estudo.aluvery.ui.viewmodels.ProductFormScreenViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import java.math.BigDecimal
-import java.text.DecimalFormat
-
-
 
 
 @Composable
 fun ProductFormScreen(
     viewModel: ProductFormScreenViewModel,
-    onSaveClick:(Product)->Unit={}
+    onSaveClick: () -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsState()
 
-    ProductFormScreen(state = state)
+    ProductFormScreen(
+        state = state,
+        onSaveClick = {
+            viewModel.save()
+            onSaveClick()
+        },
+    )
 
 }
-
-//val click = {
-//    val convertedPrice = try {
-//        BigDecimal(price)
-//    } catch (e: NumberFormatException) {
-//        Log.e("ProductFormScreen", "ProductFormScreen: ${e.message}", e)
-//        BigDecimal.ZERO
-//    }
-//    val product = Product(
-//        name = name,
-//        image = url,
-//        price = convertedPrice,
-//        description = if(description.isNotBlank()) description else null
-//    )
-//    Log.i("ProductFormScreen", "ProductFormScreen: $product")
-//    onSaveClick(product)
-//}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,11 +58,11 @@ fun ProductFormScreen(
     state: ProductFormScreenUiState,
     onSaveClick: () -> Unit = {}
 ) {
-    var url =state.url
+    var url = state.url
     var name = state.name
     var price = state.price
 
-    var description =state.description
+    var description = state.description
 
     Column(
         Modifier

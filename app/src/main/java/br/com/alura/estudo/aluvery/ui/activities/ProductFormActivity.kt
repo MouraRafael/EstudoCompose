@@ -22,7 +22,13 @@ class ProductFormActivity : ComponentActivity() {
             AluveryTheme {
                 Surface {
                     val viewModel:ProductFormScreenViewModel by viewModels()
-                    ProductFormScreen(viewModel)
+                    ProductFormScreen(
+                        viewModel = viewModel,
+                        onSaveClick = {
+                            finish()
+
+                        }
+                    )
                 }
             }
         }

@@ -1,7 +1,9 @@
 package br.com.alura.estudo.aluvery.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import br.com.alura.estudo.aluvery.dao.ProductDao
+import br.com.alura.estudo.aluvery.model.Product
 import br.com.alura.estudo.aluvery.ui.states.ProductFormScreenUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +19,24 @@ class ProductFormScreenViewModel : ViewModel() {
     val uiState get() = _uiState.asStateFlow()
     val formatter = DecimalFormat("0.00")
 
+    fun save(){
+        _uiState.value.run {
+            val convertedPrice = try {
+                BigDecimal(price)
+            } catch (e: NumberFormatException) {
+                Log.e("ProductFormScreen", "ProductFormScreen: ${e.message}", e)
+                BigDecimal.ZERO
+            }
+            val product = Product(
+                name = name,
+                image = url,
+                price = convertedPrice,
+                description = if(description.isNotBlank()) description else null
+            )
+
+            dao.save(product)
+        }
+    }
 
     init {
         _uiState.update { currentState ->
