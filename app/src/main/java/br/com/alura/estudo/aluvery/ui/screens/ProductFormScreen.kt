@@ -104,7 +104,7 @@ fun ProductFormScreen(
             name = name,
             image = url,
             price = convertedPrice,
-            description = description
+            description = if(description.isNotBlank()) description else null
         )
         Log.i("ProductFormScreen", "ProductFormScreen: $product")
         onSaveClick(product)
