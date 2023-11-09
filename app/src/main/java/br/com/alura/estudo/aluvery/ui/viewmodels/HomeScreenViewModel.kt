@@ -1,44 +1,50 @@
 package br.com.alura.estudo.aluvery.ui.viewmodels
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.alura.estudo.aluvery.dao.ProductDao
 import br.com.alura.estudo.aluvery.model.Product
 import br.com.alura.estudo.aluvery.sampledata.sampleCandies
 import br.com.alura.estudo.aluvery.sampledata.sampleDrinks
-import br.com.alura.estudo.aluvery.sampledata.sampleProducts
 import br.com.alura.estudo.aluvery.ui.states.HomeScreenUiState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel : ViewModel() {
     private val dao = ProductDao()
 
 
-    var uiState: HomeScreenUiState by mutableStateOf(HomeScreenUiState(
-        onSearchTextChanged = {
-            uiState = uiState.copy(
+    private var _uiState: MutableStateFlow<HomeScreenUiState> = MutableStateFlow(HomeScreenUiState())
+    val uiState get() = _uiState.asStateFlow()
 
-                searchText = it,
-                searchedProducts = searchedProducts(it)
-            )
-        }
-    ))
-        private set
 
     init {
+
+        _uiState.update { currentValue->
+                currentValue.copy(
+                    onSearchTextChanged = {
+                        _uiState.value = _uiState.value.copy(
+                            searchText = it,
+                            searchedProducts = searchedProducts(it)
+                        )
+                    }
+                )
+
+        }
+
+
         viewModelScope.launch {
             dao.products().collect { products ->
-                uiState = uiState.copy(
+                _uiState.value = _uiState.value.copy(
                     sections = mapOf(
                         "Todos os Produtos" to products,
                         "Promoções" to sampleDrinks + sampleCandies,
                         "Doces" to sampleCandies,
                         "bebidas" to sampleDrinks
-                    )
+                    ),
+                    searchedProducts = searchedProducts(uiState.value.searchText)
                 )
             }
         }
